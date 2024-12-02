@@ -1,6 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/tKEUpLiS)
 # Project 01 For NeXT CS
-### Name0: YOUR NAME HERE
+### Name0: Nicaiah Pericles
 ### Name1: OTHER NAME HERE (delete this line if you are working solo)
 ---
 
@@ -17,50 +17,69 @@ This project will be completed in phases. The first phase will be to work on thi
 
 ## Phase 0: Selection, Analysis & Plan
 
-#### Selected Project: CHOOSE WISELY
+#### Selected Project: Space Invaders
 
 ### Necessary Features
 What are the core features that your program should have? These should be things that __must__ be implemented in order to make the program useable/playable, not extra features that could be added to make the program more interesting/fun.
 
-YOUR ANSWERS HERE
+Player Movement, shooting function, enemy movement, game over, win, different types of enemies
 
 ### Extra Features
 What are some features that are not essential to the program, but you would like to see (provided you have time after completing the necessary features. Theses can be customizations that are not part of the core requirements.
 
-YOUR ANSWERS HERE
+Power ups, levels
 
 ### Array Usage
 How will you be using arrays in this project?
 
 1D Array:
-- YOUR ANSER HERE
+- Store the powerups the player has
 
 2D Array:
-- YOUR ANSWER HERE
+- create the grid of enemies
 
 
 ### Controls
 How will your program be controlled? List all keyboard commands and mouse interactions.
 
 Keyboard Commands:
-- LIST OF COMMANDS HERE
+- Arrows: player movement
+- Space: shoot
+- 'r': reset
+- enter: use powerup
 
 Mouse Control:
-- Mouse movement:
-- Mouse pressed:
+- Mouse movement: player movement
+- Mouse pressed: pause/unpause
 
 
 ### Classes
 What classes will you be creating for this project? Include the instance variables and methods that you believe you will need. You will be required to create at least 2 different classes. If you are going to use classes similar to those we've made for previous assignments, you will have to add new features to them.
 
-CLASS NAME0
+Ships
 - Instance variables:
-  - LIST INSTANCE VARS HERE
+  - xspeed
+  - yspeed
+  - size
+  - scolor
 - METHODS
-  - LIST METHODS HERE
+  - collisionCheck
+  - level up
+  - usePower
+  - setSpeed
+  - setColor
+  - shootBullet
+  - move
+  - display
 
-CLASS NAME1
+Powerups
 - Instance variables:
-  - LIST INSTANCE VARS HERE
+  - yspeed
+  - pcolor
+  - Pvector (spawn cords)
 - METHODS
-  - LIST METHODS HERE
+  - setColor
+  - collectedCheck
+  - move
+  - display
+ 
