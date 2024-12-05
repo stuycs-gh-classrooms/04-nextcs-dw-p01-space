@@ -2,14 +2,18 @@ int NUM_ROWS = 3;
 int NUM_COLS = 5;
 int BALL_SIZE = 40;
 int PROJECTILE_SIZE = 20;
+PVector bCenter;
+int bSize;
 ShipGrid Ships;
 Ship projectile;
+Bullet b;
 
 void setup() {
   size(400, 400);
 
   newProjectile(PROJECTILE_SIZE);
   Ships = new ShipGrid(NUM_ROWS, NUM_COLS, PROJECTILE_SIZE);
+  b = new Bullet(bCenter, bSize);
 }//setup
 
 void draw() {
@@ -32,7 +36,8 @@ void draw() {
 
 void keyPressed() {
   if (key == ' ') {
-    Ships.shootBullet(projectile);
+    b.display();
+    b.move();
   }
   if (keyCode == LEFT) {
     projectile.center.x-=projectile.size;
