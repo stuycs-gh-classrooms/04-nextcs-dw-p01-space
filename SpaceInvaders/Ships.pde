@@ -14,8 +14,8 @@ class Ship {
    }
 
   boolean collisionCheck(Ship other) {
-    return ( this.center.dist(other.center)
-             <= (this.size/2 + other.size/2) );
+    return (( this.center.dist(other.center) <= (this.size/2 + other.size/2) ) ||
+    (this.center.y - this.size == 0));
   }//collisionCheck
 
   void setColor(color newC) {
@@ -25,7 +25,7 @@ class Ship {
   //visual behavior
   void display() {
     fill(scolor);
-    circle(center.x, center.y, size);
+    ellipse(center.x, center.y, size, size);
   }//display
 
   void setSpeed(int newx, int newy) {

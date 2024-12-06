@@ -9,7 +9,7 @@ class Bullet {
    //default constructor
    Bullet(PVector p, int s) {
      size = s;
-     center = new PVector(50, 200);
+     center = new PVector(150, 150);
 
    }
 
