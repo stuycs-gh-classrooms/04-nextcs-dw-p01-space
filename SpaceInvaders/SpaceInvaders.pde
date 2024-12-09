@@ -1,63 +1,75 @@
-int NUM_ROWS = 7;
-int NUM_COLS = 10;
-int BALL_SIZE = 40;
-int PROJECTILE_SIZE = 20;
+Ship player;
+PVector p;
+PVector b;
+color playerColor = color(100, 20, 200);
+color bulletColor = color(200, 200, 0);
+int level = 1;
+Bullet bullet;
+EnemyGrid invaders;
 
-PVector bCenter;
-int bSize;
-ShipGrid Ships;
-Ship projectile;
-Ship b;
 
 void setup() {
   size(400, 400);
-
-  PVector d = new PVector(width/2, height-PROJECTILE_SIZE/2);
-  projectile = new Ship(d, PROJECTILE_SIZE);
-  Ships = new ShipGrid(NUM_ROWS, NUM_COLS, PROJECTILE_SIZE);
-  newProjectile(20);
-}//setup
+  PVector p = new PVector(width/2, height-10);
+  player = new Ship(p, 20, playerColor);
+  invaders = new EnemyGrid(3, 5, 20);
+  PVector b = new PVector (-100, player.center.y - player.size);
+  bullet = new Bullet(b, 5);
+}
 
 void draw() {
   background(255);
-  Ships.display();
-  b.display();
-  b.move();
-  projectile.display();
-  projectile.move();
-
-  boolean hit = Ships.processCollisions(b);
-  if (hit) {
-    newProjectile(PROJECTILE_SIZE);
+  invaders.display();
+  player.display();
+  player.move();
+  player.changeColor(playerColor);
+  bullet.c = bulletColor;
+  bullet.display();
+  bullet.move();
+  Levels();
+  
+  boolean invaderHit = invaders.processCollisions(bullet);
+  if (invaderHit) {
+    //println("hit");
+    newBullet();
   }
-  println(b.center.y - b.size);
-  if ((b.center.y - b.size) < -4){
-    newProjectile(PROJECTILE_SIZE);
+  //println(bullet.center.y);
+  if (bullet.center.y < 0){
+    newBullet();
   }
   if (frameCount % 30 == 0) {
-    Ships.move();
+    invaders.move();
   }
-  //saveFrame("data/" + nf(frameCount, 4) + ".png");
-}//draw
+}
 
+void Levels() {
+  boolean newLevel = invaders.allGone();
+  if (newLevel && (level == 1)){
+    print("newlebel");
+    bullet.center.x = -100;
+    delay(300);
+   
+    invaders.level2();
+    level = 2;
+  }
+}
 
-void keyPressed() {
+void keyPressed(){
   if (key == ' ') {
-    text("Bullet", 150, 150);
-    b.yspeed = -6;
+    bullet.center.x = player.center.x;
+    bullet.yspeed = -15;
   }
   if (keyCode == LEFT) {
-    projectile.center.x-=projectile.size;
-    // add boolean check to see if bullet has been shot yet
+    player.center.x -= 3;
+    //need to make boolean for 'has been shot' that will no longer make bullet
+    //move side to side
   }
   if (keyCode == RIGHT) {
-    projectile.center.x+=projectile.size;
+    player.center.x += 3;
   }
-}//keyPressed
+}
 
-void newProjectile(int psize) {
-  PVector p = new PVector(width/2, height-psize/2);
-  
-  int bsize = 10;
-  b = new Ship(p, bsize);
-}//newProjectile
+void newBullet() {
+  PVector b = new PVector (-100, player.center.y - player.size);
+  bullet = new Bullet(b, 5);
+}//newBullet
