@@ -18,10 +18,11 @@ boolean gameOver;
 boolean won;
 boolean paused;
 int lives;
+int score;
 
 
 void setup() {
-  size(300, 500);
+  size(300, 300);
   PVector p = new PVector(width/2, height-ENEMYSIZE/2);
   player = new Ship(p, playerSize, playerColor);
   invaders = new EnemyGrid(ROWS, COLS, ENEMYSIZE);
@@ -34,6 +35,7 @@ void setup() {
   won = false;
   paused = false;
   lives = 3;
+  score = 0;
   makeStars();
 }
 
@@ -58,7 +60,10 @@ void draw() {
     
     textAlign(RIGHT);
     textSize(20);
-    text("lives: " + lives, 70, 15);
+    text("lives: " + lives, 60, 15);
+    textAlign(LEFT);
+    textSize(20);
+    text("score: " + score, width-72, 15);
     
     Badbullet.yspeed = 8;
     Badbullet.display();
@@ -85,6 +90,12 @@ void draw() {
     boolean invaderHit = invaders.processCollisions(bullet);
     if (invaderHit) {
       //println("hit");
+      if (level == 1){
+        score += 1;
+      }
+      if (level == 2){
+        score += 2;
+      }
       newBullet();
     }
     //println(bullet.center.y);
@@ -113,6 +124,8 @@ void draw() {
     textAlign(CENTER);
     textSize(width/10);
     text("GAME OVER", width/2, height/2);
+    textSize(width/14);
+    text("SCORE: " + score, width/2, height/2 + width/10);
   }
   
   if (won){
@@ -120,6 +133,8 @@ void draw() {
     textAlign(CENTER);
     textSize(width/10);
     text("YOU WON !!!", width/2, height/2);
+    textSize(width/14);
+    text("SCORE: " + score, width/2, height/2 + width/10);
   }
   
   if (paused){
@@ -168,6 +183,7 @@ void keyPressed(){
   }
   
   if (key == 'r') {
+    gameOver = false;
     invaders.reset();
     lives = 3;
     player.center.x = width/2;
@@ -179,7 +195,7 @@ void keyPressed(){
 
 void mousePressed(){
   if ((mousePressed) & (mouseX < width) & (mouseY < height)){ //the ands arent necessary but i wasnt sure how else to demonstrate I know how to use mouse cords
-    if (paused == false){
+    if ((paused == false) && (gameOver == false) && (won == false)){
       paused = true;
     }else{
       paused = false;
