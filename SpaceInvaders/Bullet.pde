@@ -14,6 +14,10 @@ class Bullet {
     return (this.center.dist(other.center) <= (this.bsize/2 + other.size/2));
   }//collisionCheck
   
+  boolean collisionCheck(Ship other) {
+    return (this.center.dist(other.center) <= (this.bsize/2 + other.size/2));
+  }//collisionCheck
+  
   void display() {
     strokeWeight(0);
     fill(c);

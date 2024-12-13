@@ -27,6 +27,8 @@ class Enemy {
   }//setSpeed
   
   void move() {
+    
+    
     if (center.x > width - size/2 ||
         center.x < size/2) {
         xspeed*= -1;
@@ -48,6 +50,8 @@ class EnemyGrid {
   int gridWidth;
   int gridHeight;
   int direction;
+  int level;
+  float yspacing;
   
   EnemyGrid(int rows, int cols, int eSize) {
     enemySize = eSize;
@@ -57,6 +61,7 @@ class EnemyGrid {
     direction = RIGHT;
     topLeft = new PVector(enemySize/2, enemySize/2);
     makeEnemies();
+    level = 1;
   }
   
   void makeEnemies() {
@@ -89,7 +94,7 @@ class EnemyGrid {
         if (grid[r][c] != null && b.collisionCheck(grid[r][c])) {
           grid[r][c] = null;
           hit = true;
-          println("hit");
+          //println("hit");
         }//collision
       }//columns
     }//rows
@@ -97,6 +102,8 @@ class EnemyGrid {
   }//processCollisions
   
   void move() {
+    checkSpacing();
+    
     if (direction == DOWN) {
       topLeft.y += enemySize;
     }
@@ -114,32 +121,64 @@ class EnemyGrid {
         }
       }//columns
     }//rows
-    
-    checkSpacing();
+
   }//move
   
   void checkSpacing() {
     float leftEdge = topLeft.x - (enemySize/2);
     float rightEdge = leftEdge + gridWidth;
     float topEdge = topLeft.y - (enemySize/2);
+    float bottomEdge = topEdge + gridHeight;
     
-    if (direction == DOWN) {
-      if (leftEdge <= 0) {
-        direction = RIGHT;
+    if (level == 1){
+      if (direction == DOWN) {
+        if (leftEdge <= 0) {
+          direction = RIGHT;
+        }
+        if (rightEdge >= width) {
+          direction = LEFT;
+        }
+        changeDirection();
+      }//switch left or right
+      else if (leftEdge <= 0) {
+        direction = DOWN;
+        changeDirection();
       }
-      if (rightEdge >= width) {
-        direction = LEFT;
+      else if (rightEdge >= width) {
+        direction = DOWN;
+        changeDirection();
       }
-      changeDirection();
-    }//switch left or right
-    else if (leftEdge <= 0) {
-      direction = DOWN;
-      changeDirection();
     }
-    else if (rightEdge >= width) {
-      direction = DOWN;
-      changeDirection();
+    
+    if (level == 2) {
+      if (direction == DOWN) {
+        if (leftEdge <= 0) {
+          direction = DOWN;
+          //print(topEdge);
+          color danger = color(200, 100, 40);
+          color peaceful = color(135, 200, 204);
+          if ((topEdge >= width/5) && (topEdge <= (2*width/5)) && (bottomEdge < width - 30)){
+          direction = RIGHT;
+            changeColor(peaceful);
+          }else{
+            changeColor(danger);
+          }
+        }
+        if (rightEdge >= width) {
+          direction = LEFT;
+        }
+        changeDirection();
+      }//switch left or right
+      else if (leftEdge <= 0) {
+        direction = DOWN;
+        changeDirection();
+      }
+      else if (rightEdge >= width) {
+        direction = DOWN;
+        changeDirection();
+      }
     }
+    
   }//checkSpacing
   
   void changeDirection() {
@@ -172,7 +211,7 @@ class EnemyGrid {
     for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[r].length; c++) {
         if (grid[r][c] != null) {
-          println("more enemies");
+          //println("more enemies");
           return (false);
         }
       }//columns
@@ -181,7 +220,17 @@ class EnemyGrid {
     return (true);
   }
   
-  void level2() {
+  void changeColor(color col){
+    for (int r = 0; r < grid.length; r++) {
+      for (int c = 0; c < grid[r].length; c++) {
+        if (grid[r][c] != null){
+          grid[r][c].setColor(col);
+        }
+      }
+    }
+  }
+  
+  void reset() {
     topLeft.x = enemySize/2;
     topLeft.y = enemySize/2;
     makeEnemies();
@@ -193,5 +242,23 @@ class EnemyGrid {
   }//
   
 // END OF SECOND LEVEL STUFF
+  
+  float findBottom(){
+    float topEdge = topLeft.y - (enemySize/2);
+    for (int r = grid.length-1; r > 0; r--) {
+      for (int c = grid[r].length -1; c > 0; c--) {
+        if (grid[r][c] != null) {
+          return (grid[r][c].center.y);
+        }
+      }
+    }
+    return (topEdge);
+  }
+  boolean hitPlayer(Ship other) {
+    float bottomEdge = findBottom();
+    //println(bottomEdge, bottomEdge - enemySize,  height - other.size);
+    return (( bottomEdge)
+             >= (height - other.size) );
+  }
   
 }//EnemyGrid
