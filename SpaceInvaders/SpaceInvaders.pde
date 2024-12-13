@@ -22,7 +22,7 @@ int score;
 
 
 void setup() {
-  size(300, 300);
+  size(300, 600);
   PVector p = new PVector(width/2, height-ENEMYSIZE/2);
   player = new Ship(p, playerSize, playerColor);
   invaders = new EnemyGrid(ROWS, COLS, ENEMYSIZE);
@@ -91,10 +91,10 @@ void draw() {
     if (invaderHit) {
       //println("hit");
       if (level == 1){
-        score += 1;
+        score += 100;
       }
       if (level == 2){
-        score += 2;
+        score += 200;
       }
       newBullet();
     }
